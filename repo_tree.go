@@ -121,3 +121,7 @@ func (r *Repository) LsTree(rev string, opts ...LsTreeOptions) (*Tree, error) {
 
 	return t, nil
 }
+
+func (r *Repository) TreeEntries(entryData []byte) (Entries, error) {
+	return parseTree(&Tree{repo: r}, entryData)
+}
