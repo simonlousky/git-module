@@ -23,7 +23,7 @@ type DiffOptions struct {
 }
 
 // Diff returns a parsed diff object between given commits of the repository.
-func (r *Repository) Diff(rev string, maxFiles, maxFileLines, maxLineChars int, opts ...DiffOptions) (*Diff, error) {
+func (r *Repository) Diff(rev string, maxFiles, maxFileLines, maxLineChars int, fileName string, opts ...DiffOptions) (*Diff, error) {
 	var opt DiffOptions
 	if len(opts) > 0 {
 		opt = opts[0]
@@ -45,6 +45,10 @@ func (r *Repository) Diff(rev string, maxFiles, maxFileLines, maxLineChars int, 
 		}
 	} else {
 		cmd.AddArgs("diff", "--full-index", "-M", opt.Base, rev)
+	}
+
+	if fileName != "" {
+		cmd.AddArgs("--", fileName)
 	}
 
 	stdout, w := io.Pipe()
